@@ -7,7 +7,6 @@ class I18nMopedApiTest < Test::Unit::TestCase
   end
 
   def self.can_store_procs?
-    # I18n::Backend::ActiveRecord.included_modules.include?(I18n::Backend::ActiveRecord::StoreProcs)
     false
   end
 
@@ -24,7 +23,27 @@ class I18nMopedApiTest < Test::Unit::TestCase
   include I18n::Tests::Localization::Time
   include I18n::Tests::Localization::Procs if can_store_procs?
 
-  test "make sure we use an ActiveRecord backend" do
+  test "make sure we use an Moped backend" do
     assert_equal I18n::Backend::Moped, I18n.backend.class
+  end
+
+  test "return only on full hash match" do
+    I18n.backend.store_translations(:en, :short_text => 'ABC you know ME')
+    assert_raises(I18n::MissingTranslationData) {I18n.translate!(:sh)}
+  end
+
+  test "changing current locale" do
+    I18n.backend.store_translations(:en, :text => 'Hi')
+    I18n.backend.store_translations(:cs, :text => 'Zdary')
+
+    original = I18n.locale
+
+    I18n.locale = :en
+    assert_equal 'Hi', I18n.t(:text)
+
+    I18n.locale = :cs
+    assert_equal 'Zdary', I18n.t(:text)
+
+    I18n.locale = original
   end
 end

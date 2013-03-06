@@ -27,7 +27,7 @@ module I18n
         protected
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
-          result = collection.find(:key => /^#{Regexp.quote(key.to_s)}/).entries
+          result = collection.find(:locale => locale.to_s, :key => /^#{Regexp.quote(key.to_s)}(\.|$)/).entries
 
           if result.empty?
             nil
