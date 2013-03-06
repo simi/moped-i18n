@@ -27,11 +27,11 @@ module I18n
         protected
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
-          result = collection.find(:locale => locale.to_s, :key => /^#{Regexp.quote(key.to_s)}(\.|$)/).entries
+          result = collection.find(:locale => locale.to_s, :key => /^#{Regexp.quote(key)}(\.|$)/).entries
 
           if result.empty?
             nil
-          elsif result.first["key"] == key.to_s
+          elsif result.first["key"] == key
             result.first["value"]
           else
             chop_range = (key.size + FLATTEN_SEPARATOR.size)..-1
