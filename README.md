@@ -1,6 +1,6 @@
-# Moped::I18n
+# Moped::I18n [![Build Status](https://travis-ci.org/simi/moped-i18n.png?branch=master)](https://travis-ci.org/simi/moped-i18n)
 
-TODO: Write a gem description
+Simple Moped (Mongoid) i18n flattened basic backend implementation.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO: soon
 
 ## Contributing
 
