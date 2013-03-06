@@ -6,7 +6,9 @@ Simple Moped (Mongoid) i18n flattened basic backend implementation.
 
 Add this line to your application's Gemfile:
 
-    gem 'moped-i18n'
+```ruby 
+gem 'moped-i18n'
+```
 
 And then execute:
 
@@ -18,7 +20,45 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: soon
+### Moped
+
+```ruby
+I18n.backend = I18n::Backend::Moped.new(collections[:i18n])
+```
+
+### Mongoid (example)
+```ruby
+I18n.backend = I18n::Backend::Moped.new(Mongoid.default_session[:i18n])
+```
+
+#### Custom model example
+```ruby
+class Translation
+  include Mongoid::Document
+  store_in collection: "i18n"
+
+  default_scope order_by(:locale => :asc, :key => :asc)
+
+  field :value
+  field :locale
+  field :key
+
+  validates :value, presence: true
+  validates :locale, presence: true
+  validates :key, presence: true, uniqueness: true
+  validates_uniqueness_of :key, :scope => :locale
+
+  attr_accessible :value, :key, :locale
+end
+```
+
+### Chained
+
+If you want mix for example classic simple backend (yaml or ruby hashes) with Mongoid backend.
+
+```ruby
+I18n::Backend::Chain.new(I18n::Backend::Moped.new(collections[:i18n])), I18n.backend)
+```
 
 ## Contributing
 
